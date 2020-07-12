@@ -1,5 +1,6 @@
 package display;
 
+import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
@@ -15,6 +16,7 @@ public class Window
 	private int majorVersion;
 	private int minorVersion;
 	private long id;
+	private Render render = null;
 
 	public static Window create(int width, int height, String title, int majorVersion, int minorVersion)
 	{
@@ -51,10 +53,30 @@ public class Window
 		return glfwWindowShouldClose(this.id);
 	}
 
+	public void setRender(Render render)
+	{
+		this.render = render;
+	}
+
 	public void update()
 	{
+		if(this.render != null)
+		{
+			this.render.draw();
+		}
 		glfwSwapBuffers(this.id);
 		glfwPollEvents();
+	}
+
+	public void shutdown()
+	{
+		if(this.render != null)
+		{
+			this.render.cleanup();
+		}
+		glfwFreeCallbacks(this.id);
+		glfwDestroyWindow(this.id);
+		glfwTerminate();
 	}
 
 	private Window(int width, int height, String title, int majorVersion, int minorVersion)
