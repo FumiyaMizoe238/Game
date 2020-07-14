@@ -9,10 +9,9 @@ import java.nio.file.Paths;
 
 public class ShaderProgram
 {
-	class Shader
+	private static class Shader
 	{
 		private int id = 0;
-		private int shaderType = 0;
 
 		public Shader()
 		{
@@ -28,7 +27,6 @@ public class ShaderProgram
 				return false;
 			}
 
-			this.shaderType = shaderType;
 			this.id = glCreateShader(shaderType);
 			glShaderSource(this.id, source);
 			glCompileShader(this.id);
@@ -47,26 +45,6 @@ public class ShaderProgram
 			return this.id;
 		}
 
-		public int getShaderType()
-		{
-			return this.shaderType;
-		}
-
-		public String getShaderTypeStr()
-		{
-			switch(this.shaderType)
-			{
-			case GL_VERTEX_SHADER:
-				return "GL_VERTEX_SHADER";
-
-			case GL_FRAGMENT_SHADER:
-				return "GL_FRAGMENT_SHADER";
-
-			default:
-				return "Unknown Type";
-			}
-		}
-
 		public void delete()
 		{
 			glDeleteShader(this.id);
@@ -80,7 +58,7 @@ public class ShaderProgram
 				String line = "";
 				while((line = reader.readLine()) != null)
 				{
-					sb.append(line + "\n");
+					sb.append(line).append("\n");
 				}
 
 				return sb.toString();

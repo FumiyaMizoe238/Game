@@ -5,50 +5,38 @@ import static org.lwjgl.opengl.GL15.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.joml.Vector4f;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
 
+import buffer.CustomVertex;
 import buffer.VertexArray;
 import buffer.VertexBuffer;
 import graphics.ShaderProgram;
 
 public class Render
 {
-	private VertexBuffer vertBuf = new VertexBuffer();
-	private VertexBuffer colorBuf = new VertexBuffer();
+	private VertexBuffer buff = new VertexBuffer();
 	private VertexArray vao = new VertexArray();
 	private ShaderProgram sp = new ShaderProgram();
 	private boolean success = true;
 
 	public Render()
 	{
-		List<Vector4f> vertices = new ArrayList<Vector4f>()
+		List<CustomVertex> vertices = new ArrayList<CustomVertex>()
 		{
 			{
-				add(new Vector4f(-0.5f, -0.5f, 0.0f, 1.0f));
-				add(new Vector4f(0.5f, -0.5f, 0.0f, 1.0f));
-				add(new Vector4f(0.5f, 0.5f, 0.0f, 1.0f));
-				add(new Vector4f(0.5f, 0.5f, 0.0f, 1.0f));
-				add(new Vector4f(-0.5f, 0.5f, 0.0f, 1.0f));
-				add(new Vector4f(-0.5f, -0.5f, 0.0f, 1.0f));
+				add(new CustomVertex(new Vector3f(-0.5f, -0.5f, 0.0f), new Vector2f(0.0f, 0.0f), new Vector3f(1.0f, 0.0f, 0.0f)));
+				add(new CustomVertex(new Vector3f(0.5f, -0.5f, 0.0f), new Vector2f(0.0f, 0.0f), new Vector3f(0.0f, 1.0f, 0.0f)));
+				add(new CustomVertex(new Vector3f(0.5f, 0.5f, 0.0f), new Vector2f(0.0f, 0.0f), new Vector3f(0.0f, 0.0f, 1.0f)));
+				add(new CustomVertex(new Vector3f(0.5f, 0.5f, 0.0f), new Vector2f(0.0f, 0.0f), new Vector3f(0.0f, 0.0f, 1.0f)));
+				add(new CustomVertex(new Vector3f(-0.5f, 0.5f, 0.0f), new Vector2f(0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 0.0f)));
+				add(new CustomVertex(new Vector3f(-0.5f, -0.5f, 0.0f), new Vector2f(0.0f, 0.0f), new Vector3f(1.0f, 0.0f, 0.0f)));
+
 			}
 		};
-		System.out.println(this.vertBuf.setData(vertices, GL_STATIC_DRAW));
+		System.out.println(this.buff.setData(vertices, GL_STATIC_DRAW));
 
-		List<Vector4f> colors = new ArrayList<Vector4f>()
-		{
-			{
-				add(new Vector4f(1.0f, 0.0f, 0.0f, 1.0f));
-				add(new Vector4f(0.0f, 1.0f, 0.0f, 1.0f));
-				add(new Vector4f(0.0f, 0.0f, 1.0f, 1.0f));
-				add(new Vector4f(0.0f, 0.0f, 1.0f, 1.0f));
-				add(new Vector4f(1.0f, 1.0f, 0.0f, 1.0f));
-				add(new Vector4f(1.0f, 0.0f, 0.0f, 1.0f));
-			}
-		};
-		System.out.println(this.colorBuf.setData(colors, GL_STATIC_DRAW));
-
-		this.vao.setAttrib(0, this.vertBuf);
-		this.vao.setAttrib(1, this.colorBuf);
+		this.vao.setAttrib(this.buff);
 
 		if(!this.sp.load("Shaders/Sample.vert", "Shaders/Sample.frag"))
 		{
@@ -79,8 +67,7 @@ public class Render
 
 	public void cleanup()
 	{
-		this.vertBuf.delete();
-		this.colorBuf.delete();
+		this.buff.delete();
 		this.vao.delete();
 		this.sp.unload();
 	}

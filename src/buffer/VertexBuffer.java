@@ -5,10 +5,9 @@ import static org.lwjgl.opengl.GL15.*;
 import java.nio.FloatBuffer;
 import java.util.List;
 
-import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
 
-public class VertexBuffer extends BufferObject<Vector4f>
+public class VertexBuffer extends BufferObject<CustomVertex>
 {
 	public VertexBuffer()
 	{
@@ -16,7 +15,7 @@ public class VertexBuffer extends BufferObject<Vector4f>
 	}
 
 	@Override
-	public boolean setData(List<Vector4f> data, int usage)
+	public boolean setData(List<CustomVertex> data, int usage)
 	{
 		FloatBuffer buff = this.createFloatBuffer(data);
 		if(buff == null)
@@ -31,26 +30,31 @@ public class VertexBuffer extends BufferObject<Vector4f>
 		return true;
 	}
 
-	private FloatBuffer createFloatBuffer(List<Vector4f> data)
+	private FloatBuffer createFloatBuffer(List<CustomVertex> data)
 	{
 		if(data.isEmpty())
 		{
 			return null;
 		}
 
-		int size = data.size();
-		FloatBuffer buff = BufferUtils.createFloatBuffer(4 * size);
-		for(int i = 0; i < size; i++)
+		FloatBuffer buff = BufferUtils.createFloatBuffer(CustomVertex.SIZE * data.size());
+		for(CustomVertex cv : data)
 		{
-			if(data.get(i) != null)
-			{
-				buff.put(data.get(i).x).put(data.get(i).y).put(data.get(i).z).put(data.get(i).w);
-			}
-			else
-			{
-				buff.put(0).put(0).put(0).put(0);
-			}
+			//positionの格納
+			buff.put(cv.getPosition().x);
+			buff.put(cv.getPosition().y);
+			buff.put(cv.getPosition().z);
+
+			//texCoordの格納
+			buff.put(cv.getTexCoord().x);
+			buff.put(cv.getTexCoord().y);
+
+			//colorの格納
+			buff.put(cv.getColor().x);
+			buff.put(cv.getColor().y);
+			buff.put(cv.getColor().z);
 		}
+
 		buff.flip();
 
 		return buff;
