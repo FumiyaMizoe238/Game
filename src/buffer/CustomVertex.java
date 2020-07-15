@@ -1,5 +1,5 @@
 package buffer;
-import java.util.Arrays;
+import java.util.stream.IntStream;
 
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -12,7 +12,7 @@ public class CustomVertex
 	private Vector3f color;
 
 	public static final int[] DIMENSION = new int[]{3,2,3};
-	public static final int SIZE = Arrays.stream(DIMENSION).sum();
+	public static final int SIZE = IntStream.of(DIMENSION).sum();
 
 	public CustomVertex(Vector3f position, Vector2f texCoord, Vector3f color)
 	{

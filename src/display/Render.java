@@ -34,7 +34,7 @@ public class Render
 
 			}
 		};
-		System.out.println(this.buff.setData(vertices, GL_STATIC_DRAW));
+		this.buff.setData(vertices, GL_STATIC_DRAW);
 
 		this.vao.setAttrib(this.buff);
 
