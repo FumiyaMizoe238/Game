@@ -82,6 +82,7 @@ public class Render
 	public void cleanup()
 	{
 		this.vBuff.delete();
+		this.iBuff.delete();
 		this.vao.delete();
 		this.sp.unload();
 	}
