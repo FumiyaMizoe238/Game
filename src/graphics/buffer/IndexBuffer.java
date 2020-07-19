@@ -31,7 +31,7 @@ public class IndexBuffer extends BufferObject<Integer>
 		glBufferData(this.target, buff, usage);
 		this.unbind();
 
-		return false;
+		return true;
 	}
 
 	public int getIndexNum()
