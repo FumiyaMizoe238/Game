@@ -1,11 +1,7 @@
 package graphics;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import static utils.Helper.*;
 
 public class ShaderProgram
 {
@@ -20,7 +16,7 @@ public class ShaderProgram
 
 		public boolean compile(String fileName, int shaderType)
 		{
-			String source = this.fileToString(fileName);
+			String source = convertFileToString(fileName);
 			if(source == null)
 			{
 				System.out.println("Failed to load : " + fileName);
@@ -49,32 +45,11 @@ public class ShaderProgram
 		{
 			glDeleteShader(this.id);
 		}
-
-		private String fileToString(String fileName)
-		{
-			try(BufferedReader reader = Files.newBufferedReader(Paths.get(fileName)))
-			{
-				StringBuilder sb = new StringBuilder();
-				String line = "";
-				while((line = reader.readLine()) != null)
-				{
-					sb.append(line).append("\n");
-				}
-
-				return sb.toString();
-			}
-			catch(IOException e)
-			{
-				e.printStackTrace();
-				return null;
-			}
-		}
 	}
 
 	private int id = 0;
 	private ShaderProgram.Shader vertShader = new ShaderProgram.Shader();
 	private ShaderProgram.Shader fragShader = new ShaderProgram.Shader();
-
 
 	public ShaderProgram()
 	{

@@ -1,4 +1,4 @@
-package buffer;
+package graphics.buffer;
 
 import static org.lwjgl.opengl.GL15.*;
 
